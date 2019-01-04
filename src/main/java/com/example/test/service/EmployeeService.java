@@ -11,7 +11,7 @@ public class EmployeeService {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    @Cacheable(cacheNames = "emp",keyGenerator = "myKeyGenerator")
+    @Cacheable(cacheNames = "emp",keyGenerator = "myKeyGenerator",cacheManager="")
     public Employee GetEmpId(Integer id){
         System.out.println("查询Id："+id);
         Employee employee = employeeMapper.GetModel(id);

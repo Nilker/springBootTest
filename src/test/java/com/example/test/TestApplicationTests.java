@@ -1,5 +1,6 @@
 package com.example.test;
 
+import com.example.test.config.RedisUtil;
 import com.example.test.entity.Employee;
 import com.example.test.mapper.EmployeeMapper;
 import org.junit.Test;
@@ -24,12 +25,16 @@ public class TestApplicationTests {
     @Autowired
     RedisTemplate redisTemplate;
 
+    @Autowired
+    RedisUtil redisUtil;
+
     @Test
     public void contextLoads() {
         Employee employee = employeeMapper.GetModel(1);
         System.out.println(employee);
 
-        Integer append = stringRedisTemplate.opsForValue().append("1", "111");
+        boolean set = redisUtil.set("1", employee);
+        //Long add = redisTemplate.opsForSet().add("1", employee);
     }
 
 }
