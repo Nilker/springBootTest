@@ -3,6 +3,9 @@ package com.example.test.entity;
 import java.io.Serializable;
 
 public class Employee implements Serializable {
+    public Employee() {
+    }
+
     private Integer id;
     private String lastName;
 
