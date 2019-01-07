@@ -5,6 +5,12 @@ import java.io.Serializable;
 public class Employee implements Serializable {
     private Integer id;
     private String lastName;
+
+    public Employee(String lastName, Integer gender) {
+        this.lastName = lastName;
+        this.gender = gender;
+    }
+
     private String email;
     private Integer gender;
     private Integer dId;
