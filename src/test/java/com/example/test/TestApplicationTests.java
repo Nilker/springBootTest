@@ -3,6 +3,10 @@ package com.example.test;
 import com.example.test.config.RedisUtil;
 import com.example.test.entity.Employee;
 import com.example.test.mapper.EmployeeMapper;
+import io.searchbox.client.JestClient;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.*;
@@ -11,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,8 +51,36 @@ public class TestApplicationTests {
     @Autowired
     private AmqpAdmin amqpAdmin;
 
+    @Autowired
+    private JestClient jestClient;
+
     @Test
-    public void  mqTest(){
+    public void  mqTest() throws IOException {
+
+//        //存储的对象
+//        Employee emp = new Employee("张三", 22);
+//        emp.setId(111);
+//        //构建一个索引功能
+//        Index index = new Index.Builder(emp).index("test").type("emp").id("222").build();
+//
+//        //执行
+//        jestClient.execute(index);
+
+
+        //查询表达式
+        String json="{\n" +
+                "    \"query\" : {\n" +
+                "        \"match\" : {\n" +
+                "            \"dId\" : 444\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+        //构建搜索功能
+        Search search = new Search.Builder(json).addIndex("test").addType("emp").build();
+        //执行
+        SearchResult result = jestClient.execute(search);
+
+        System.out.println(result.getJsonString());
 
         //amqpTemplate.send();
 
@@ -62,7 +96,7 @@ public class TestApplicationTests {
 //        //创建绑定关系
 //        amqpAdmin.declareBinding(new Binding("myemp" , Binding.DestinationType.QUEUE,"my-dir","my-rout",null));
 
-        amqpTemplate.convertAndSend("myemp",new Employee("zhansn",12));
+//        amqpTemplate.convertAndSend("myemp",new Employee("zhansn",12));
     }
 }
 
